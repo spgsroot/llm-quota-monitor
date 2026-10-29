@@ -1,0 +1,8 @@
+/.vscode
+/.embuild
+/target
+**/.embuild/
+**/target/
+firmware.local.ps1
+README.local.md
+docs/article.md

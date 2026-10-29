@@ -1,0 +1,40 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/README.md"
+  pull_request:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  host:
+    name: Collector and shared contract
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all -- --check
+      - run: cargo test --locked -p quota-common -p quota-collector
+      - run: cargo clippy --locked -p quota-common -p quota-collector --all-targets -- -D warnings
+
+  firmware:
+    name: ESP32 firmware
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: esp-rs/xtensa-toolchain@v1.6
+        with:
+          default: true
+          buildtargets: esp32
+          ldproxy: true
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo +esp build --locked -p quota-firmware --target xtensa-esp32-espidf -Z build-std=std,panic_abort

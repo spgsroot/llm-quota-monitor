@@ -1,0 +1,16 @@
+[workspace]
+members = ["crates/common", "crates/collector", "crates/firmware"]
+default-members = ["crates/common", "crates/collector"]
+resolver = "2"
+
+[profile.release]
+opt-level = "s"
+
+[profile.dev]
+debug = true
+opt-level = "z"
+
+[patch.crates-io]
+esp-idf-sys = { git = "https://github.com/esp-rs/esp-idf.git", rev = "2a6f1b37ae9c698dc2bd611339854531737c5e8c" }
+esp-idf-hal = { git = "https://github.com/esp-rs/esp-idf.git", rev = "2a6f1b37ae9c698dc2bd611339854531737c5e8c" }
+esp-idf-svc = { git = "https://github.com/esp-rs/esp-idf.git", rev = "2a6f1b37ae9c698dc2bd611339854531737c5e8c" }

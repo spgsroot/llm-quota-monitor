@@ -1,0 +1,13 @@
+[target.'cfg(target_os = "espidf")']
+linker = "ldproxy"
+runner = "espflash flash --monitor"
+rustflags = [ "--cfg",  "espidf_time64"]
+
+[env]
+MCU = "esp32"
+ESP_IDF_VERSION = { value = "v5.5.3", force = true }
+ESP_IDF_TOOLS_INSTALL_DIR = "workspace"
+
+# Required when CARGO_TARGET_DIR is moved outside the workspace.
+CARGO_WORKSPACE_DIR = { value = "", relative = true }
+ESP_IDF_SDKCONFIG_DEFAULTS = { value = "crates/firmware/sdkconfig.defaults", relative = true }
